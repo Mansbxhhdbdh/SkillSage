@@ -1,0 +1,232 @@
+body {
+    background-color:rgba(244, 231, 231, 0.734);
+    /* font-family: 'Asap', sans-serif; */
+    
+
+
+  font-family: "Josefin Sans", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 300;
+  font-style: normal;
+
+    
+  }
+  
+  .login {
+    overflow: hidden;
+    background-color: white;
+    padding: 40px 30px 30px 30px;
+    border-radius: 10px;
+    position: absolute;
+    
+    top: 55%;
+    left: 25%;
+    width: 400px;
+    height: 73%;
+    transform: translate(-50%, -50%);
+    transition: transform 300ms, box-shadow 300ms;
+    box-shadow: 5px 10px 10px rgba(2, 128, 144, 0.2);
+  }
+  video {
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    min-width: 100%;
+    min-height: 100%;
+   
+   
+    width: auto;
+    height: auto;
+    z-index: -1;
+}
+  .register-link {
+    margin-right: 55%;
+   margin-top: 10px;
+   margin-bottom: 20px;
+   color:rgb(10, 130, 228) !important;
+   /* // <uniquifier>: Use a uniquifier for the class name
+// <weight>: Use a value from 100 to 700 */
+
+
+  font-family: "Josefin Sans", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 375;
+  font-style: normal;
+
+ }
+
+  .forgot-password {
+   
+    margin-top: 10px;
+    color:black !important;
+}
+.forgot-password2 {
+   margin-right: 80%;
+  margin-top: 10px;
+  color:black !important;
+}
+  
+  .password-container{
+    width: 400px;
+    font-family: 'Asap', sans-serif;
+    position: relative;
+  }
+  .password-container input[type="password"],
+  .password-container input[type="text"]{
+    width: 100%;
+    padding: 12px 36px 12px 12px;
+    box-sizing: border-box;
+  }
+ 
+  
+.login-title {
+  
+  margin-left: -50%;
+  margin-top: 4%;
+  /* font-family: 'Asap', sans-serif; */
+  /* font-weight: 600; */
+  color: white;
+  margin-bottom: 30px;
+  font-family: "Josefin Sans", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 700;
+  font-style: normal;
+}
+
+.lovers-quarrel-regular {
+
+  font-family: "Dancing Script", cursive;
+  font-optical-sizing:auto;
+  font-weight: 700;
+  font-style: normal;
+  font-size: 30px;
+  
+  color:white; 
+  margin-top:30%;
+  margin-left:53%;
+ 
+   background: linear-gradient(to right, white,rgb(62, 171, 243)); 
+  -webkit-background-clip: text;
+  color: transparent;
+}
+
+
+  .login::before,
+  .login::after {
+    content: '';
+    position: absolute;
+    width: 600px;
+    height: 600px;
+    border-top-left-radius: 40%;
+    border-top-right-radius: 45%;
+    border-bottom-left-radius: 35%;
+    border-bottom-right-radius: 60%;
+    z-index: -1;
+  }
+  
+  .login::before {
+    left: 40%;
+    bottom: -20%;
+    background-color: rgba(69, 105, 144, 0.15);
+    animation: wawes 6s infinite linear;
+  }
+  
+  .login::after {
+    left: 45%;
+    bottom: -15%;
+    background-color: rgba(2, 128, 144, 0.2);
+    animation: wawes 7s infinite;
+  }
+  
+  .login > input {
+    /* font-family: 'Asap', sans-serif; */
+    display: block;
+    border-radius: 5px;
+    font-size: 16px;
+    background: rgba(221, 228, 227, 0.734);
+    width: 100%;
+   
+    border: 5px;
+    padding: 10px 10px;
+    margin: 15px -10px;
+    /* // <uniquifier>: Use a uniquifier for the class name
+// <weight>: Use a value from 100 to 700 */
+
+  font-family: "Josefin Sans", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 375;
+  font-style: normal;
+
+  }
+  
+  .login > button {
+    font-family: 'Asap', sans-serif;
+    cursor: pointer;
+    color: #fff;
+    font-size: 16px;
+    text-transform: uppercase;
+    width: 100px;
+    border: 0;
+    padding: 10px 0;
+    margin-top: 10px;
+    margin-left: 140px;
+    border-radius: 5px;
+    background-color: rgb(90, 51, 197);
+    transition: background-color 300ms;
+  }
+ #otpb
+ {
+  font-family: 'Asap', sans-serif;
+  cursor: pointer;
+  color: #fff;
+  font-size: 16px;
+  text-transform: uppercase;
+  width: 250px;
+  position:relative;
+  border: 0;
+  padding: 10px 0;
+  margin-top: 10px;
+  margin-left: 80px;
+  border-radius: 5px;
+  background-color: rgb(90, 51, 197);
+  transition: background-color 300ms;
+}
+ 
+ .gender-container {
+    display: flex;
+    align-items: center;
+    margin-top: 10px;
+}
+
+.gender-options {
+    display: flex;
+    margin-left: 10px; /* Adjust margin as needed */
+}
+
+.gender-options input[type="radio"] {
+    margin-right: 5px; /* Adjust margin as needed */
+}
+ 
+  
+  .login > button:hover {
+    background-color: rgba(219, 71, 83, 1);
+  }
+  
+  @keyframes wawes {
+    from {
+      transform: rotate(0);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+  
+  a {
+    text-decoration: none;
+    color: rgba(255, 255, 255, 0.6);
+    position: absolute;
+    right: 10px;
+    bottom: 10px;
+    font-size: 12px;
+  }
+  

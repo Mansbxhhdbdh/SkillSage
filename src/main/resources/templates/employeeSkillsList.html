@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Employee Skills List</title>
+    <style>
+    
+    .navbar {
+            background-color: #a2c1e4;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .navbar img {
+            width: 120px;
+            height: 60px;
+        }
+
+        .logout-link,
+        .home-link {
+            color: #fff;
+            text-decoration: none;
+            font-size: 16px;
+        }
+
+        .logout-link:hover,
+        .home-link:hover {
+            text-decoration: underline;
+        }
+
+        .logout-container {
+            margin-right: 20px;
+        }
+
+        .logout-button,
+        .home-button {
+            background-color: #08223d;
+            color: #fff;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            text-decoration: none;
+            transition: background-color 0.3s ease;
+        }
+
+        .logout-button:hover,
+        .home-button:hover {
+            background-color: #376b96;
+        }
+        
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #e9ecef;
+            background-image: url(hhttps://image.shutterstock.com/image-vector/abstract-gray-background-vector-illustration-260nw-547924498.jpg);
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: cover;
+            background-repeat: no-repeat;
+            margin: 0;
+            padding: 0;
+        }
+
+        h2 {
+            color: #3498db;
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #3498db;
+            color: white;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        tr:hover {
+            background-color: #ddd;
+        }
+
+        form {
+            margin: 0;
+            padding: 0;
+        }
+
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 6px 12px;
+            border: none;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+<div class="navbar">
+    <img src="https://thisisthbs-my.sharepoint.com/:i:/r/personal/yaseswini_depuru_thbs_com/Documents/Microsoft%20Teams%20Chat%20Files/logo.gif?csf=1&web=1&e=Oe68fq" alt="Torry Harris Logo" width="100" height="50">
+    <h2>Employee Skills List</h2>
+    <div class="logout-container">
+        <a href="/user-page" class="home-button">Home</a>
+        <a href="/logout" class="logout-button">Logout</a>
+    </div>
+</div>
+
+
+
+<table>
+    <tr>
+        <th>Emp ID</th>
+        <th>Emp Name</th>
+        <th>Skill Name</th>
+        <th>Proficiency</th>
+        <th>Experience</th>
+        <th>Cert Source</th>
+        <th>Action</th>
+    </tr>
+    <tr th:each="employeeSkill : ${employeeSkills}">
+        <td th:text="${employeeSkill.id.empid}"></td>
+        <td th:text="${employeeSkill.login_det.fullname}"></td>
+        <td th:text="${employeeSkill.skills.skillname}"></td>
+        <td th:text="${employeeSkill.proficiency}"></td>
+        <td th:text="${employeeSkill.exp}"></td>
+        <td th:text="${employeeSkill.cert_source}"></td>
+        <td>
+            <form action="/editEmployeeskill" method="post">
+                <input type="hidden" name="empid" th:value="${employeeSkill.id.empid}">
+                <input type="hidden" name="skillid" th:value="${employeeSkill.id.skillid}">
+                <button type="submit">Edit</button>
+            </form>
+        </td>
+    </tr>
+</table>
+
+</body>
+</html>

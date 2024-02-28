@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Skill Form</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #e9ecef;
+            margin: 0;
+            padding: 0;
+        }
+
+        .navbar {
+            background-color: #a2c1e4;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .navbar img {
+            width: 100px;
+            height: 50px;
+        }
+
+        .logout-container {
+            margin-right: 20px;
+        }
+
+        .logout-button,
+        .home-button {
+            background-color: #08223d;
+            color: #fff;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            text-decoration: none;
+            transition: background-color 0.3s ease;
+        }
+
+        .logout-button:hover,
+        .home-button:hover {
+            background-color: #376b96;
+        }
+
+        h2 {
+            color: #333;
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        form {
+            background-color: #e9ecef;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            max-width: 400px;
+            margin: 20px auto;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        select,
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+            font-size: 16px;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px 20px;
+            background-color: #08223d;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        .edit-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        .edit-container button {
+            flex-basis: 30%;
+        }
+    </style>
+</head>
+<body>
+
+<div class="navbar">
+    <img src="https://thisisthbs-my.sharepoint.com/:i:/r/personal/yaseswini_depuru_thbs_com/Documents/Microsoft%20Teams%20Chat%20Files/logo.gif?csf=1&web=1&e=Oe68fq" alt="Torry Harris Logo">
+    <h2>Skill Form</h2>
+    <div class="logout-container">
+        <a href="/admin-page" class="home-button">Home</a>
+        <a href="/EmpSkillDash" class="home-button">Back</a>
+        <a href="/logout" class="logout-button">Logout</a>
+    </div>
+</div>
+
+
+
+<form id="skillForm" action="#" method="post">
+    <label for="domain">Domain:</label>
+    <select id="domain" name="domain" onchange="updateSubdomains()">
+        <option value="" selected disabled>Select Domain</option>
+        <!-- Options for domains will be added dynamically -->
+    </select>
+
+    <div class="edit-container" id="editDomain" style="display: none;">
+        <label for="editedDomain">Edited Domain:</label>
+        <input type="text" id="editedDomain" name="editedDomain">
+        <button type="button" onclick="saveDomain()">Save Domain</button>
+    </div>
+
+    <label for="subdomain">Subdomain:</label>
+    <select id="subdomain" name="subdomain" onchange="updateSkillnames()">
+        <option value="" selected disabled>Select Subdomain</option>
+        <!-- Options for subdomains will be added dynamically -->
+    </select>
+
+    <div class="edit-container" id="editSubdomain" style="display: none;">
+        <label for="editedSubdomain">Edited Subdomain:</label>
+        <input type="text" id="editedSubdomain" name="editedSubdomain">
+        <button type="button" onclick="saveSubdomain()">Save Subdomain</button>
+    </div>
+
+    <label for="skillname">Skill Name:</label>
+    <select id="skillname" name="skillname">
+        <option value="" selected disabled>Select Skill Name</option>
+        <!-- Options for skill names will be added dynamically -->
+    </select>
+
+    <div class="edit-container" id="editSkillname" style="display: none;">
+        <label for="editedSkillname">Edited Skill Name:</label>
+        <input type="text" id="editedSkillname" name="editedSkillname">
+        <button type="button" onclick="saveSkillname()">Save Skill Name</button>
+    </div>
+
+    <button type="submit">Submit</button>
+</form>
+    <script>
+        function updateSubdomains() {
+            var selectedDomain = document.getElementById("domain").value;
+            var subdomainDropdown = document.getElementById("subdomain");
+            var skillnameDropdown = document.getElementById("skillname");
+            skillnameDropdown.innerHTML = ''; // Clear skillname options
+ 
+            fetch('/subdomains?domain=' + selectedDomain)
+                .then(response => response.json())
+                .then(data => {
+                    subdomainDropdown.innerHTML = '';
+                    data.forEach(subdomain => {
+                        var option = document.createElement('option');
+                        option.value = subdomain;
+                        option.textContent = subdomain;
+                        subdomainDropdown.appendChild(option);
+                    });
+                    // After updating subdomains, update skillnames as well
+                    updateSkillnames();
+                });
+        }
+ 
+        function updateSkillnames() {
+            var selectedDomain = document.getElementById("domain").value;
+            var selectedSubdomain = document.getElementById("subdomain").value;
+            var skillnameDropdown = document.getElementById("skillname");
+ 
+            fetch('/skillnames?domain=' + selectedDomain + '&subdomain=' + selectedSubdomain)
+                .then(response => response.json())
+                .then(data => {
+                    skillnameDropdown.innerHTML = '';
+                    data.forEach(skillname => {
+                        var option = document.createElement('option');
+                        option.value = skillname;
+                        option.textContent = skillname;
+                        skillnameDropdown.appendChild(option);
+                    });
+                });
+        }
+ 
+        function updateDomain() {
+            var domainDropdown = document.getElementById("domain");
+                if (domainDropdown.value === "") {
+        alert("Please select a domain.");
+        return;
+    }
+            
+            var editedDomainTextbox = document.getElementById("editedDomain");
+            editedDomainTextbox.value = domainDropdown.value;
+            document.getElementById("editDomain").style.display = "block";
+        }
+ 
+        function updateSubdomain() {
+            var subdomainDropdown = document.getElementById("subdomain");
+              if (subdomainDropdown.value === "") {
+        alert("Please select a subdomain.");
+        return;
+    }
+            var editedSubdomainTextbox = document.getElementById("editedSubdomain");
+            editedSubdomainTextbox.value = subdomainDropdown.value;
+            document.getElementById("editSubdomain").style.display = "block";
+        }
+ 
+        function updateSkillname() {
+            var skillnameDropdown = document.getElementById("skillname");
+             if (skillnameDropdown.value === "") {
+        alert("Please select a skill name.");
+        return;
+    }
+            var editedSkillnameTextbox = document.getElementById("editedSkillname");
+            editedSkillnameTextbox.value = skillnameDropdown.value;
+            document.getElementById("editSkillname").style.display = "block";
+        }
+ 
+function saveDomain() {
+    var editedDomainTextbox = document.getElementById("editedDomain");
+    var domain = document.getElementById("domain").value;
+    var editedDomain = editedDomainTextbox.value;
+
+ if (editedDomain === domain) {
+        alert("Edited version should not be same as the previous one.");
+        return;
+    }
+    var confirmation = confirm("Do you want to modify the domain?");
+    if (!confirmation) {
+        return; // If the user cancels, do nothing
+    }
+
+    var formData = new FormData();
+    formData.append("domain", domain);
+    formData.append("editedDomain", editedDomain);
+
+    fetch('/updateDomain', {
+        method: 'PUT',
+        body: formData
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        return response.text(); // Read response as text instead of JSON
+    })
+    .then(data => {
+        console.log('Domain updated successfully:', data);
+        // Update the domain dropdown value to reflect the change
+        document.getElementById("domain").value = editedDomain;
+        // Refresh subdomains after update
+        updateSubdomains();
+        // Reload the page to reflect changes
+        window.location.reload();
+    })
+    .catch(error => {
+        console.error('There was a problem updating the domain:', error);
+    });
+}
+
+
+
+
+function saveSubdomain() {
+    var editedSubdomainTextbox = document.getElementById("editedSubdomain");
+    var domain = document.getElementById("domain").value;
+    var subdomain = document.getElementById("subdomain").value;
+    var editedSubdomain = editedSubdomainTextbox.value;
+
+  if (editedSubdomain === subdomain) {
+        alert("Edited version should not be same as the previous one.");
+        return;
+    }
+    var confirmation = confirm("Do you want to modify the subdomain?");
+    if (!confirmation) {
+        return; // If the user cancels, do nothing
+    }
+
+    var formData = new FormData();
+    formData.append("domain", domain);
+    formData.append("subdomain", subdomain);
+    formData.append("editedSubdomain", editedSubdomain);
+
+    fetch('/updateSubdomain', {
+        method: 'PUT',
+        body: formData
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        // Handle non-JSON response here
+        console.log('Subdomain updated successfully');
+        updateSkillnames(); // Refresh skillnames after update
+        // Reload the page to reflect changes
+        window.location.reload();
+    })
+    .catch(error => {
+        console.error('There was a problem updating the subdomain:', error);
+    });
+}
+
+
+
+function saveSkillname() {
+    var editedSkillnameTextbox = document.getElementById("editedSkillname");
+    var domain = document.getElementById("domain").value;
+    var subdomain = document.getElementById("subdomain").value;
+    var skillname = document.getElementById("skillname").value;
+    var editedSkillname = editedSkillnameTextbox.value;
+
+  if (editedSkillname === skillname) {
+        alert("Edited version should not be same as the previous one.");
+        return;
+    }
+    var confirmation = confirm("Do you want to modify the skill name?");
+    if (!confirmation) {
+        return; // If the user cancels, do nothing
+    }
+
+    var formData = new FormData();
+    formData.append("domain", domain);
+    formData.append("subdomain", subdomain);
+    formData.append("skillname", skillname);
+    formData.append("editedSkillname", editedSkillname);
+
+    fetch('/updateSkillname', {
+        method: 'PUT',
+        body: formData
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        // Handle non-JSON response here
+        console.log('Skill name updated successfully');
+        // Reload the page to reflect changes
+        window.location.reload();
+    })
+    .catch(error => {
+        console.error('There was a problem updating the skill name:', error);
+    });
+}
+
+
+    </script>
+</body>
+</html>

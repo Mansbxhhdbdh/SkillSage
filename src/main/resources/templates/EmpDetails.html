@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Details</title>
+    <style>
+        .navbar {
+            background-color: #a2c1e4;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .navbar img {
+            width: 100px;
+            height: 50px;
+        }
+
+        .logout-link,
+        .home-link {
+            color: #fff;
+            text-decoration: none;
+            font-size: 16px;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            background-color: #4f4f51; /* Set background color for home and logout links */
+        }
+
+        .logout-link:hover,
+        .home-link:hover {
+            background-color: #376b96; /* Darken the background color on hover */
+        }
+
+        .logout-container {
+            margin-right: 20px;
+        }
+
+        .logout-button,
+        .home-button {
+            background-color: #4f4f51; /* Set background color for home and logout buttons */
+            color: #fff;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            text-decoration: none;
+            transition: background-color 0.3s ease;
+        }
+
+        .logout-button:hover,
+        .home-button:hover {
+            background-color: #376b96; /* Darken the background color on hover */
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #e9ecef;
+            background-image: url(hhttps://image.shutterstock.com/image-vector/abstract-gray-background-vector-illustration-260nw-547924498.jpg);
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: cover;
+            background-repeat: no-repeat;
+            margin: 0;
+            padding: 0;
+        }
+
+        h2 {
+            text-align: center;
+            color: #333;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: left;
+            border: 1px solid #888; /* Darken the border color */
+        }
+
+        th {
+            background-color: #376b96; /* Background color for table heading */
+            color: #fff; /* Text color for table heading */
+        }
+
+        tr:hover {
+            background-color: #f0f0f0;
+        }
+
+        input[type="submit"] {
+            background-color: #4f4f51;
+            color: #fff;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #4f4f51;
+        }
+        
+         .download-button {
+        background-color: #08223d;
+        color: #fff;
+        padding: 10px 15px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 16px;
+        text-decoration: none;
+        transition: background-color 0.3s ease;
+    }
+
+    .download-button:hover {
+        background-color: #376b96;
+    }
+    </style>
+</head>
+<body>
+
+<div class="navbar">
+    <img src="https://thisisthbs-my.sharepoint.com/:i:/r/personal/yaseswini_depuru_thbs_com/Documents/Microsoft%20Teams%20Chat%20Files/logo.gif?csf=1&web=1&e=Oe68fq" alt="Torry Harris Logo">
+    <h2>Login Details</h2>
+    <div class="logout-container">
+        <a href="/employeeess" class="home-button">Back</a>
+        <a href="/admin-page" class="home-button">Home</a>
+        <a href="/logout" class="logout-button">Logout</a>
+    </div>
+</div>
+
+<table>
+    <thead>
+        <tr>
+            <th>Employee ID</th>
+            <th>Email</th>
+            <th>Role</th>
+            <th>Full Name</th>
+            <th>Project</th>
+            <th>Project Description</th>
+            <th>Date From</th>
+            <th>Date To</th>
+            <th>Delete</th>
+        </tr>
+    </thead>
+    <tbody>
+        <th:block th:each="loginDet : ${loginDetails}">
+            <tr>
+                <td th:text="${loginDet.empid}"></td>
+                <td th:text="${loginDet.email}"></td>
+                <td th:text="${loginDet.role}"></td>
+                <td th:text="${loginDet.fullname}"></td>
+                <td th:text="${loginDet.project}"></td>
+                <td th:text="${loginDet.pro_desc}"></td>
+                <td th:text="${loginDet.dateFrom}"></td>
+                <td th:text="${loginDet.dateTo}"></td>
+                <td>
+                    <form action="/delete-login-detail" method="post">
+                        <input type="hidden" name="empid" th:value="${loginDet.empid}">
+                        <input type="submit" value="Delete">
+                    </form>
+                </td>
+            </tr>
+        </th:block>
+    </tbody>
+</table>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
+
+<script>
+    function downloadHTMLPage() {
+        // Select the table element
+        const table = document.querySelector('table');
+ 
+        // Define the options for html2pdf
+        const options = {
+            filename: 'report.pdf',
+            image: { type: 'jpeg', quality: 0.98 },
+            html2canvas: { scale: 2 },
+            jsPDF: { unit: 'pt', format: 'a4', orientation: 'portrait' }
+        };
+ 
+        // Convert the table to PDF
+        html2pdf().from(table).set(options).save();
+    }
+</script>
+</body>
+<!-- Download Report button -->
+    <div style="text-align: center; margin-top: 20px;">
+        <button onclick="downloadHTMLPage()" class="download-button">Download Report</button>
+    </div>
+</html>

@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="ISO-8859-1">
+     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Skill Details</title>
+    <style>
+        .navbar {
+            background-color: #a2c1e4;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .navbar img {
+            width: 120px;
+            height: 60px;
+        }
+
+        .logout-link,
+        .home-link {
+            color: #fff;
+            text-decoration: none;
+            font-size: 16px;
+        }
+
+        .logout-link:hover,
+        .home-link:hover {
+            text-decoration: underline;
+        }
+
+        .logout-container {
+            margin-right: 20px;
+        }
+
+        .logout-button,
+        .home-button {
+            background-color: #08223d;
+            color: #fff;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            text-decoration: none;
+            transition: background-color 0.3s ease;
+        }
+
+        .logout-button:hover,
+        .home-button:hover {
+            background-color: #376b96;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #e9ecef;
+            background-image: url(hhttps://image.shutterstock.com/image-vector/abstract-gray-background-vector-illustration-260nw-547924498.jpg);
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: cover;
+            background-repeat: no-repeat;
+            margin: 0;
+            padding: 0;
+        }
+
+        h2 {
+            color: #3498db;
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 80%;
+            margin: 20px auto;
+        }
+
+        th,
+        td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #3498db;
+            color: white;
+        }
+
+        tbody tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        tbody tr:hover {
+            background-color: #e0e0e0;
+        }
+
+        button {
+            background-color: #4caf50;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 20px;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+        
+        .download-button {
+        background-color: #08223d;
+        color: #fff;
+        padding: 10px 15px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 16px;
+        text-decoration: none;
+        transition: background-color 0.3s ease;
+    }
+
+    .download-button:hover {
+        background-color: #376b96;
+    }
+    </style>
+</head>
+
+<div class="navbar">
+    <img src="https://thisisthbs-my.sharepoint.com/:i:/r/personal/yaseswini_depuru_thbs_com/Documents/Microsoft%20Teams%20Chat%20Files/logo.gif?csf=1&web=1&e=Oe68fq" alt="Torry Harris Logo" width="100" height="50">
+    <h2>Employee Skill Details</h2>
+    <div class="logout-container">
+        <a href="/user-page" class="home-button">Home</a>
+        <a href="/logout" class="logout-button">Logout</a>
+    </div>
+</div>
+
+  <!-- Add a button to trigger the download -->
+    
+
+
+    <table>
+        <thead>
+            <tr>
+                <th>Employee ID</th>
+                <th>Skill Name</th>
+                <th>Skill SubDomain</th>
+                <th>Skill Domain</th>
+                <th>Proficiency</th>
+                <th>Experience</th>
+                <th>Certification Source</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="employeeSkill : ${employeeSkills}">
+                <td th:text="${employeeSkill.login_det.empid}"></td>
+                <td th:text="${employeeSkill.skills.skillname}"></td>
+                <td th:text="${employeeSkill.skills.subdomain}"></td>
+                <td th:text="${employeeSkill.skills.domain}"></td>
+                <td th:text="${employeeSkill.proficiency}"></td>
+                <td th:text="${employeeSkill.exp}"></td>
+                <td th:text="${employeeSkill.cert_source}"></td>
+            </tr>
+        </tbody>
+    </table>
+
+<!-- Include html2pdf library -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
+
+  <!-- Include jsPDF library -->
+<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.debug.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.min.js"></script> -->
+
+<!-- <script>
+    function downloadHTMLPage() {
+        // Fetch the HTML content from the server
+        fetch("/downloadHTMLPage")
+            .then(response => response.text()) // Convert response to text
+            .then(htmlContent => {
+                // Create a new jsPDF instance
+                const doc = new jsPDF();
+                // Set the content of the PDF document
+                doc.html(htmlContent, {
+                    callback: function () {
+                        // Save the PDF file with the name "report.pdf"
+                        doc.save('report.pdf');
+                    }
+                });
+            })
+            .catch(error => {
+                console.error('Error downloading HTML page:', error);
+            });
+    }
+</script> -->
+<script>
+    function downloadHTMLPage() {
+        // Select the table element
+        const table = document.querySelector('table');
+
+        // Define the options for html2pdf
+        const options = {
+            filename: 'report.pdf',
+            image: { type: 'jpeg', quality: 0.98 },
+            html2canvas: { scale: 2 },
+            jsPDF: { unit: 'pt', format: 'a4', orientation: 'portrait' }
+        };
+
+        // Convert the table to PDF
+        html2pdf().from(table).set(options).save();
+    }
+</script>
+
+</body>
+<!-- Download Report button -->
+    <div style="text-align: center; margin-top: 20px;">
+        <button onclick="downloadHTMLPage()" class="download-button">Download Report</button>
+    </div>
+</html>

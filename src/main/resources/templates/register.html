@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+
+<head>
+  <link rel="stylesheet" th:href="@{https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css}">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Login Page</title>
+  <link th:href="@{/css/reg.css}" rel="stylesheet" />
+  <link rel="preconnect" th:href="@{https://fonts.googleapis.com}">
+  <link rel="preconnect" th:href="@{https://fonts.gstatic.com}" crossorigin>
+  <link th:href="@{https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400..700&family=Lovers+Quarrel&display=swap}" rel="stylesheet">
+</head>
+
+<body>
+  <h2 align="center" class="login-title">Registration Form</h2>
+  <video autoplay muted loop>
+    <!-- Update the video path accordingly -->
+    <source src="https://thmedia.azureedge.net/assets/video3.mp4" type="video/mp4">
+      Your browser does not support the video tag.
+  </video>
+  <div class="lovers-quarrel-regular">
+    <h1> Welcome to Skillsage!</h1>
+   <h1>Update, Upskill ∞</h1>
+  </div>
+
+  <div>
+    <form th:action="@{/registration}" method="post" role="form" th:object="${user}" onsubmit="return checkOtpAndRegister()" id="registrationForm">
+      <div class="login">
+        <!-- Other Thymeleaf attributes -->
+        <input th:field="*{empid}" type="text" id="empid" name="empid" placeholder="Enter your Employee ID" required>
+        <input th:field="*{fullname}" type="text" id="fullname" name="fullname" placeholder="Enter your Full Name" required>
+            <div class="gender-container">
+		    <label for="gender">Gender:</label>
+		    <div class="gender-options">
+		        <input type="radio" th:field="*{gender}" id="male" name="gender" value="Male">
+		        <label for="male">Male</label>
+		
+		        <input type="radio" th:field="*{gender}" id="female" name="gender" value="Female">
+		        <label for="female">Female</label>
+		        
+		        <input type="radio" th:field="*{gender}" id="other" name="gender" value="Other">
+		        <label for="other">Other</label>
+		    </div>
+		</div>
+        <input th:field="*{email}" type="email" id="email" name="email" placeholder="Enter your E-mail" required>
+        <button type="button" onclick="sendOtp(); return false;">Send OTP</button>
+        <input th:field="*{otp}" type="text" id="otp" name="otp" placeholder="Enter OTP" required>
+        <input th:field="*{password}" type="password" id="password" name="password" placeholder="Enter your Password" required autocomplete="current-password">
+        <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Confirm Password" required autocomplete="current-password">
+		
+
+        <input th:field="*{designation}" type="text" id="designation" name="designation" placeholder="Enter your Designation">
+        
+        <button type="button" id="otpb" value="Check OTP and Register" onclick="checkOtpAndRegister()">Check OTP and Register</button>
+        <div>
+          <a class="register-link" th:href="@{/login}">Already has an account? Login!</a>
+        </div>
+      </div>
+    </form>
+  </div>
+
+
+
+
+  <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+ 
+   <script>
+		<!-- Add these scripts in your HTML file -->
+ 
+ 
+ 
+function sendOtp() {
+    var empId = document.getElementById("empid").value;
+    var fullName = document.getElementById("fullname").value;
+    var email = document.getElementById("email").value;
+ var gender = document.querySelector('input[name="gender"]:checked') ? document.querySelector('input[name="gender"]:checked').value : null;
+    // Send AJAX request to initiate registration and send OTP
+    $.ajax({
+        type: "POST",
+        url: "/sendOtp/" + encodeURIComponent(email),
+        data: {
+            empid: empId,
+            fullname: fullName,
+            email: email,
+            gender:gender
+        },
+        success: function (response) {
+            // Display success or error message
+            alert("OTP is sent successfully, Please check your mail!");
+            if (response.valid) {
+                // Store OTP for later verification
+                document.getElementById("otp").setAttribute("otp", response.otp);
+            }
+        },
+        error: function () {
+            alert("Failed to initiate registration. Please try again.");
+        }
+    });
+}
+ 
+ 
+</script>
+ 
+<script>
+function checkOtpAndRegister() {
+    var otp = document.getElementById("otp").value;
+    var empId = document.getElementById("empid").value;
+    var fullName = document.getElementById("fullname").value;
+    var email = document.getElementById("email").value;
+    var password = document.getElementById("password").value;
+    var designation = document.getElementById("designation").value;
+ 
+  var gender = document.querySelector('input[name="gender"]:checked') ? document.querySelector('input[name="gender"]:checked').value : null;
+    // Additional fields
+    
+ var confirmPassword = document.getElementById("confirmPassword").value;
+    if (password !== confirmPassword) {
+        alert("Password and Confirm Password do not match. Please check again.");
+        return;
+    }
+ 
+    // Send AJAX request to verify OTP
+    $.ajax({
+        type: "POST",
+        url: "/verifyOtp",
+        data: {
+            empid: empId,
+            fullname: fullName,
+            email: email,
+            otp: otp,
+            password: password,
+            designation: designation,
+            gender:gender
+           
+         },
+        success: function (otpResponse) {
+            if (otpResponse.status === "success") {
+                // If OTP verification is successful, proceed with user registration
+                registerUser(empId, fullName, email, gender);
+            } else {
+                // Handle unsuccessful OTP verification (e.g., display an error message)
+                alert("Invalid OTP. Please try again.");
+            }
+        },
+        error: function () {
+            // Handle AJAX error during OTP verification
+            alert("Failed to verify OTP. Please try again.");
+        }
+    });
+}
+ 
+function registerUser(empId, fullName, email) {
+    // Collect other form data for user registration
+    var password = document.getElementById("password").value;
+    var designation = document.getElementById("designation").value;
+     var gender = document.querySelector('input[name="gender"]:checked') ? document.querySelector('input[name="gender"]:checked').value : null;
+ 
+    // Send AJAX request to register the user
+    $.ajax({
+        type: "POST",
+        url: "/registration",
+        data: {
+            empid: empId,
+            fullname: fullName,
+            email: email,
+            password: password,
+            designation: designation,
+            gender:gender
+ 
+            // Include other fields as needed
+        },
+        success: function (registrationResponse) {
+            // Handle the response after user registration
+            alert("Registered Successsfully!, Redirecting to Login Page...");
+            
+            // You can redirect to another page or perform other actions as needed
+            
+            setTimeout(function () {
+        window.location.href = '/login'; // Change the URL as needed
+    }, 2000);
+            
+            
+        },
+        error: function () {
+            // Handle AJAX error during user registration
+            alert("Failed to complete user registration. Please try again.");
+        }
+    });
+}
+ 
+ 
+</script>
+	
+</body>
+</html>
